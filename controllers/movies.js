@@ -1,12 +1,15 @@
 const Movie = require('../models/movie');
 
-const getMovies = (req, res) => {
+const NotFoundError = require('../errors/NotFoundError');
+const DataError = require('../errors/DataError');
+
+const getMovies = (req, res, next) => {
   Movie.find({})
     .then((movies) => res.status(200).send(movies))
-    .catch((err) => res.send(err));
+    .catch(next);
 };
 
-const addMovie = (req, res) => {
+const addMovie = (req, res, next) => {
   const {
     country,
     director,
@@ -35,20 +38,24 @@ const addMovie = (req, res) => {
     movieId,
   })
     .then((movie) => res.status(200).send(movie))
-    .catch((err) => res.send(err));
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        next(new DataError('Переданы некорректные данные'));
+      }
+      next(err);
+    });
 };
 
-const deleteMovie = (req, res) => {
+const deleteMovie = (req, res, next) => {
   Movie.findById(req.params._id)
     .onFail(() => {
-      res.send('Фильм не найден');
-      // throw new NotFoundError('Фильм не найден');
+      throw new NotFoundError('Фильм не найден');
     })
     .then((movie) => {
       movie.remove()
         .then(() => res.status(200).send('Фильм удален'));
     })
-    .catch((err) => res.send(err));
+    .catch(next);
 };
 
 module.exports = {

@@ -10,13 +10,22 @@ const DataError = require('../errors/DataError');
 const EmailError = require('../errors/EmailError');
 const AuthError = require('../errors/AuthError');
 
-const getUserInfo = (req, res) => {
-  User.find({})
+const getUserInfo = (req, res, next) => {
+  User.findById(req.user._id)
+    .orFail(() => {
+      throw new NotFoundError('Пользователь с таким id не найден');
+    })
     .then((user) => res.status(200).send(user))
-    .catch((err) => res.send(err));
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        next(new DataError('Неверный запрос или данные'));
+      } else {
+        next(err);
+      }
+    });
 };
 
-const updateUserInfo = (req, res) => {
+const updateUserInfo = (req, res, next) => {
   const { email, name } = req.body;
 
   User.findByIdAndUpdate(req.user._id, { email, name }, { runValidators: true, new: true })
@@ -24,7 +33,13 @@ const updateUserInfo = (req, res) => {
       throw new NotFoundError('Пользователь не найден');
     })
     .then((user) => res.status(200).send(user))
-    .catch((err) => res.send(err));
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        next(new DataError('Переданы некорректные данные'));
+      } else {
+        next(err);
+      }
+    });
 };
 
 const createUser = (req, res, next) => {
