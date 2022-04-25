@@ -2,6 +2,7 @@ const Movie = require('../models/movie');
 
 const NotFoundError = require('../errors/NotFoundError');
 const DataError = require('../errors/DataError');
+const RightsError = require('../errors/RightsError');
 
 const getMovies = (req, res, next) => {
   Movie.find({})
@@ -52,8 +53,11 @@ const deleteMovie = (req, res, next) => {
       throw new NotFoundError('Фильм не найден');
     })
     .then((movie) => {
-      movie.remove()
-        .then(() => res.status(200).send('Фильм удален'));
+      if (!movie.owner.equals(req.user._id)) {
+        return next(new RightsError('Нельзя удалить фильм другого пользователя'));
+      }
+      return movie.remove()
+        .then(() => res.status(200).send({ message: 'Карточка удалена' }));
     })
     .catch(next);
 };
