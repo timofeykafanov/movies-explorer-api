@@ -1,10 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const { celebrate, Joi } = require('celebrate');
+const { celebrate, Joi, errors } = require('celebrate');
 const cookieParser = require('cookie-parser');
 
 const NotFoundError = require('./errors/NotFoundError');
 const auth = require('./middlewares/auth');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const {
   createUser,
@@ -24,6 +25,8 @@ app.use(express.json());
 mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
   useNewUrlParser: true,
 });
+
+app.use(requestLogger);
 
 app.use('/users', auth, require('./routes/users'));
 app.use('/movies', auth, require('./routes/movies'));
@@ -48,6 +51,10 @@ app.post('/signout', logout);
 app.use((req, res, next) => {
   next(new NotFoundError('Такой страницы не существует'));
 });
+
+app.use(errorLogger);
+
+app.use(errors());
 
 app.use((err, req, res, next) => {
   res
