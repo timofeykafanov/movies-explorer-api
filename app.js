@@ -48,7 +48,7 @@ app.post('/signup', celebrate({
 
 app.post('/signout', logout);
 
-app.use((req, res, next) => {
+app.use(auth, (req, res, next) => {
   next(new NotFoundError('Такой страницы не существует'));
 });
 
