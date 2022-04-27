@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const NotFoundError = require('./errors/NotFoundError');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3000, MONGO_ADDRESS } = process.env;
 
 const app = express();
 
@@ -15,7 +15,7 @@ app.use(cookieParser());
 app.listen(PORT);
 app.use(express.json());
 
-mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
+mongoose.connect(`mongodb://localhost:27017/${MONGO_ADDRESS}`, {
   useNewUrlParser: true,
 });
 
