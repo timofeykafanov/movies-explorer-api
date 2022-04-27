@@ -16,13 +16,7 @@ const getUserInfo = (req, res, next) => {
       throw new NotFoundError('Пользователь с таким id не найден');
     })
     .then((user) => res.status(200).send(user))
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        next(new DataError('Неверный запрос или данные'));
-      } else {
-        next(err);
-      }
-    });
+    .catch(next);
 };
 
 const updateUserInfo = (req, res, next) => {

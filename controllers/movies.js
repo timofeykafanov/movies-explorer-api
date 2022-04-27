@@ -42,10 +42,9 @@ const addMovie = (req, res, next) => {
     .then((movie) => res.status(200).send(movie))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        res.send(err);
-        next(new DataError('Переданы некорректные данные'));
+        return next(new DataError('Переданы некорректные данные'));
       }
-      next(err);
+      return next(err);
     });
 };
 
