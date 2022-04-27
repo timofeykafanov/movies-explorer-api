@@ -28,18 +28,25 @@ const getUserInfo = (req, res, next) => {
 const updateUserInfo = (req, res, next) => {
   const { email, name } = req.body;
 
-  User.findByIdAndUpdate(req.user._id, { email, name }, { runValidators: true, new: true })
-    .orFail(() => {
-      throw new NotFoundError('Пользователь не найден');
-    })
-    .then((user) => res.status(200).send(user))
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(new DataError('Переданы некорректные данные'));
-      } else {
-        next(err);
+  User.findOne({ email })
+    .then((respose) => {
+      if (respose) {
+        throw new EmailError('Пользователь с таким email уже существует');
       }
-    });
+      User.findByIdAndUpdate(req.user._id, { email, name }, { runValidators: true, new: true })
+        .orFail(() => {
+          throw new NotFoundError('Пользователь не найден');
+        })
+        .then((user) => res.status(200).send(user))
+        .catch((err) => {
+          if (err.name === 'ValidationError') {
+            next(new DataError('Переданы некорректные данные'));
+          } else {
+            next(err);
+          }
+        });
+    })
+    .catch(next);
 };
 
 const createUser = (req, res, next) => {
@@ -62,11 +69,9 @@ const createUser = (req, res, next) => {
         }))
         .then((newUser) => {
           res.status(200).send({
-            data: {
-              name: newUser.name,
-              email: newUser.email,
-              _id: newUser._id,
-            },
+            _id: newUser._id,
+            email: newUser.email,
+            name: newUser.name,
           });
         });
     })
@@ -99,7 +104,11 @@ const login = (req, res, next) => {
               maxAge: 3600000 * 24 * 7,
               httpOnly: true,
             })
-            .send(user);
+            .send({
+              _id: user._id,
+              email: user.email,
+              name: user.name,
+            });
         })
         .catch(next);
     });

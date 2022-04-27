@@ -12,7 +12,7 @@ PATCH http://localhost:3000/users/me
 Content-Type: application/json
 
 {
-  "email": "tim.kafanov@ya.com",
+  "email": "tim.kafanov@gmail.com",
   "name": "2222"
 }
 
