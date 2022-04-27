@@ -71,7 +71,7 @@ const createUser = (req, res, next) => {
         });
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.statusCode === 400) {
         next(new DataError('Переданы некорректные данные'));
       } else {
         next(err);

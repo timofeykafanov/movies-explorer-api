@@ -1,0 +1,26 @@
+POST http://localhost:3000/signin
+Content-Type: application/json
+
+{
+  "email": "tim.kafanov@gmail.com",
+  "password": "1111"
+}
+
+###
+
+PATCH http://localhost:3000/users/me
+Content-Type: application/json
+
+{
+  "email": "tim.kafanov@ya.com",
+  "name": "2222"
+}
+
+###
+
+GET http://localhost:3000/movies
+
+###
+
+GET http://localhost:3000/users/me
+
