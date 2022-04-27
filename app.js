@@ -4,7 +4,6 @@ const { errors } = require('celebrate');
 const cookieParser = require('cookie-parser');
 
 const NotFoundError = require('./errors/NotFoundError');
-const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { PORT = 3000 } = process.env;
@@ -22,12 +21,7 @@ mongoose.connect('mongodb://localhost:27017/bitfilmsdb', {
 
 app.use(requestLogger);
 
-app.use(require('./routes/auth'));
-
-app.use(auth);
-
-app.use(require('./routes/users'));
-app.use(require('./routes/movies'));
+app.use(require('./routes/index'));
 
 app.use((req, res, next) => {
   next(new NotFoundError('Такой страницы не существует'));
