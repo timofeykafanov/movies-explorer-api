@@ -13,8 +13,8 @@ Domain https://api.movie.diploma.nomoredomains.work
 
 In the project directory, you can run:
 
-### 'npm install'
+### `npm install`
 
-### 'npm run dev'
+### `npm run dev`
 
 Runs the app in the development mode.\
