@@ -1,4 +1,4 @@
-POST http://localhost:3000/movies
+POST http://localhost:3001/movies
 Content-Type: application/json
 
 {
@@ -17,7 +17,7 @@ Content-Type: application/json
 
 ###
 
-PATCH http://localhost:3000/users/me
+PATCH http://localhost:3001/users/me
 Content-Type: application/json
 
 {
@@ -28,7 +28,7 @@ Content-Type: application/json
 ###
 
 
-POST http://localhost:3000/signin
+POST http://localhost:3001/signin
 Content-Type: application/json
 
 {
@@ -38,7 +38,7 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:3000/signup
+POST http://localhost:3001/signup
 Content-Type: application/json
 
 {
@@ -49,14 +49,14 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/movies/626a68703f1dc883dde7c393
+DELETE http://localhost:3001/movies/6288b68942385961732a955f
 
 ###
 
-GET http://localhost:3000/users/me
+GET http://localhost:3001/users/me
 
 
 ###
 
-GET http://localhost:3000/movies
+GET http://localhost:3001/movies
 

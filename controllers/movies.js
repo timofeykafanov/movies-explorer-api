@@ -49,8 +49,8 @@ const addMovie = (req, res, next) => {
 };
 
 const deleteMovie = (req, res, next) => {
-  Movie.findById(req.params._id)
-    .onFail(() => {
+  Movie.findById(req.params.movieId)
+    .orFail(() => {
       throw new NotFoundError('Фильм не найден');
     })
     .then((movie) => {
