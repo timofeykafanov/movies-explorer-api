@@ -1,0 +1,62 @@
+POST http://localhost:3001/movies
+Content-Type: application/json
+
+{
+  "movieId": 1,
+  "nameRU": "«Роллинг Стоунз» в изгнании",
+  "nameEN": "Stones in Exile",
+  "director": "Стивен Кайак ",
+  "country": "США",
+  "year": "2010",
+  "duration": 61,
+  "description": "В конце 1960-х группа «Роллинг Стоунз», несмотря на все свои мегахиты и сверхуспешные концертные туры, была разорена. Виной всему — бездарный менеджмент и драконовское налогообложение в Британии. Тогда музыканты приняли не самое простое для себя решение: летом 1971 года после выхода альбома «Stiсky Fingers» они отправились на юг Франции записывать новую пластинку. Именно там, на Лазурном Берегу, в арендованном Китом Ричардсом подвале виллы Неллькот родился сборник «Exile on Main St.», который стал лучшим альбомом легендарной группы.",
+  "trailerLink": "https://www.youtube.com/watch?v=UXcqcdYABFw",
+  "image": "https://4.bp.blogspot.com/_qOtHWwviO50/TCY-lqTR4-I/AAAAAAAAICA/uK1xPd-3tUc/s1600/Clipboard74.jpg",
+  "thumbnail": "https://4.bp.blogspot.com/_qOtHWwviO50/TCY-lqTR4-I/AAAAAAAAICA/uK1xPd-3tUc/s1600/Clipboard74.jpg"
+}
+
+###
+
+PATCH http://localhost:3001/users/me
+Content-Type: application/json
+
+{
+  "email": "tim.kafanov@ya.com",
+  "name": "Tim"
+}
+
+###
+
+
+POST http://localhost:3001/signin
+Content-Type: application/json
+
+{
+  "email": "tim.kafanov@ya.com",
+  "password": "1111"
+}
+
+###
+
+POST http://localhost:3001/signup
+Content-Type: application/json
+
+{
+  "email": "tim.kafanov@gmail.com",
+  "password": "1111",
+  "name": "Tim"
+}
+
+###
+
+DELETE http://localhost:3001/movies/6288b68942385961732a955f
+
+###
+
+GET http://localhost:3001/users/me
+
+
+###
+
+GET http://localhost:3001/movies
+
