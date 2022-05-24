@@ -14,6 +14,9 @@ app.use((req, res, next) => {
   const allowedCors = [
     'localhost:3000',
     'http://localhost:3000',
+    'movie.diploma.nomoreparties.sbs',
+    'http://movie.diploma.nomoreparties.sbs',
+    'https://movie.diploma.nomoreparties.sbs',
   ];
   const { origin } = req.headers;
   const { method } = req;
