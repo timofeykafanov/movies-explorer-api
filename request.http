@@ -49,7 +49,7 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3001/movies/626a68703f1dc883dde7c393
+DELETE http://localhost:3001/movies/6288b68942385961732a955f
 
 ###
 

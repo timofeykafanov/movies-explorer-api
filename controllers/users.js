@@ -24,7 +24,7 @@ const updateUserInfo = (req, res, next) => {
 
   User.findOne({ email })
     .then((response) => {
-      if (response && !email === req.user.email) {
+      if (response) {
         throw new EmailError('Пользователь с таким email уже существует');
       }
       User.findByIdAndUpdate(req.user._id, { email, name }, { runValidators: true, new: true })
@@ -97,6 +97,8 @@ const login = (req, res, next) => {
             .cookie('jwt', token, {
               maxAge: 3600000 * 24 * 7,
               httpOnly: true,
+              secure: true,
+              sameSite: 'none',
             })
             .send({
               _id: user._id,
