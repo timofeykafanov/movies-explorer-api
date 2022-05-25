@@ -11,53 +11,19 @@ const { PORT = 3001, MONGO_ADDRESS = 'mongodb://localhost:27017/moviesdb' } = pr
 
 const app = express();
 
-const allowedCors = [
-  'localhost:3000',
-  'http://localhost:3000',
-  'http://movie.diploma.nomoreparties.sbs',
-  'https://movie.diploma.nomoreparties.sbs',
-];
-
-app.use(cors());
-
-app.use((req, res, next) => {
-  const { origin } = req.headers;
-
-  if (allowedCors.includes(origin)) {
-    res.header('Access-Control-Allow-Origin', origin);
-  }
-
-  next();
-});
-
-app.options('*', cors());
-
-// app.use((req, res, next) => {
-//   const allowedCors = [
-//     'localhost:3000',
-//     'http://localhost:3000',
-//     'movie.diploma.nomoreparties.sbs',
-//     'http://movie.diploma.nomoreparties.sbs',
-//     'https://movie.diploma.nomoreparties.sbs',
-//   ];
-//   const { origin } = req.headers;
-//   const { method } = req;
-//   const requestHeaders = req.headers['access-control-request-headers'];
-
-//   if (allowedCors.includes(origin)) {
-//     res.header('Access-Control-Allow-Origin', origin);
-//     res.header('Access-Control-Allow-Credentials', 'true');
-//   }
-
-//   if (method === 'OPTIONS') {
-//     res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
-//     res.header('Access-Control-Allow-Headers', requestHeaders);
-//     return res.end();
-//   }
-
-//   next();
-//   return true;
-// });
+app.use('*', cors({
+  origin: [
+    'localhost:3000',
+    'http://localhost:3000',
+    'http://movie.diploma.nomoreparties.sbs',
+    'https://movie.diploma.nomoreparties.sbs',
+  ],
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+  allowedHeaders: ['Content-Type', 'Origin', 'Referer', 'Accept', 'Authorization'],
+  credentials: true,
+}));
 
 app.use(cookieParser());
 
