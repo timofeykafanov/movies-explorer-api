@@ -30,6 +30,8 @@ app.use((req, res, next) => {
   next();
 });
 
+app.options('*', cors());
+
 // app.use((req, res, next) => {
 //   const allowedCors = [
 //     'localhost:3000',
