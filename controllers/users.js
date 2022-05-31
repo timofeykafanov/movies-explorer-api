@@ -62,11 +62,19 @@ const createUser = (req, res, next) => {
           password: hash,
         }))
         .then((newUser) => {
-          res.status(200).send({
-            _id: newUser._id,
-            email: newUser.email,
-            name: newUser.name,
-          });
+          const token = jwt.sign({ _id: newUser._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret', { expiresIn: '7d' });
+          res
+            .cookie('jwt', token, {
+              maxAge: 3600000 * 24 * 7,
+              httpOnly: true,
+              secure: true,
+              sameSite: 'none',
+            })
+            .status(200).send({
+              _id: newUser._id,
+              email: newUser.email,
+              name: newUser.name,
+            });
         });
     })
     .catch((err) => {
@@ -100,6 +108,7 @@ const login = (req, res, next) => {
               secure: true,
               sameSite: 'none',
             })
+            .status(200)
             .send({
               _id: user._id,
               email: user.email,
@@ -111,11 +120,14 @@ const login = (req, res, next) => {
 };
 
 const logout = (req, res) => {
-  res.cookie('jwt', 'jwt.token.revoked', {
-    httpOnly: true,
-    sameSite: true,
-    maxAge: -1,
-  }).send({ message: 'Сессия завершена' });
+  res
+    .cookie('jwt', 'jwt.token.revoked', {
+      httpOnly: true,
+      sameSite: true,
+      maxAge: -1,
+    })
+    .clearCookie('connect.sid')
+    .send({ message: 'Сессия завершена' });
 };
 
 module.exports = {
