@@ -126,7 +126,6 @@ const logout = (req, res) => {
       sameSite: true,
       maxAge: -1,
     })
-    .clearCookie('connect.sid')
     .send({ message: 'Сессия завершена' });
 };
 
