@@ -123,7 +123,8 @@ const logout = (req, res) => {
   res
     .cookie('jwt', 'jwt.token.revoked', {
       httpOnly: true,
-      sameSite: true,
+      sameSite: 'none',
+      secure: true,
       maxAge: -1,
     })
     .send({ message: 'Сессия завершена' });
